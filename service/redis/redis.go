@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"trae-llm-testing-dogfood-2-553/library/service/conf"
+	"go-library/service/conf"
 
 	"github.com/redis/go-redis/v9"
 )
