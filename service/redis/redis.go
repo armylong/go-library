@@ -30,10 +30,10 @@ func init() {
 	dialTimeout = 1 * time.Second        // 拨号超时1秒（合理，快速失败）
 	poolSize = 10                        // 连接池大小10（通用场景足够）
 	minIdleConns = 5                     // 最小空闲连接5（合理，避免频繁创建）
-	maxConnAge = 30 * time.Minute        // 修正：30分钟（而非30秒）
-	poolTimeout = 3 * time.Second        // 获取连接超时3秒（合理）
-	idleTimeout = 5 * time.Minute        // 修正：空闲5分钟关闭（而非30秒）
-	idleCheckFrequency = 1 * time.Minute // 修正：每分钟检查一次（而非1秒）
+	maxConnAge = 30 * time.Minute        // 30分钟
+	poolTimeout = 3 * time.Second        // 获取连接超时3秒
+	idleTimeout = 5 * time.Minute        // 空闲5分钟关闭
+	idleCheckFrequency = 1 * time.Minute // 每分钟检查一次
 }
 
 func Init(serverName string) {
