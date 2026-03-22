@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"go-library/service/conf"
+	"github.com/armylong/go-library/service/conf"
 
 	"github.com/redis/go-redis/v9"
 )

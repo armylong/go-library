@@ -2,7 +2,10 @@ module go-library
 
 go 1.24.0
 
-require github.com/redis/go-redis/v9 v9.18.0
+require (
+	github.com/armylong/go-library v0.0.0-20260322094732-06a7a9094c50
+	github.com/redis/go-redis/v9 v9.18.0
+)
 
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
