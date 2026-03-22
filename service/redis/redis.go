@@ -28,7 +28,7 @@ var (
 
 func init() {
 	dialTimeout = 1 * time.Second        // 拨号超时1秒（合理，快速失败）
-	poolSize = 10                        // 连接池大小10（通用场景足够）
+	poolSize = 10                        // 连接池大小10
 	minIdleConns = 5                     // 最小空闲连接5（合理，避免频繁创建）
 	maxConnAge = 30 * time.Minute        // 30分钟
 	poolTimeout = 3 * time.Second        // 获取连接超时3秒
