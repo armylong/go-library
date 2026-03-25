@@ -6,8 +6,9 @@ import (
 
 // ErrorUnknown
 const (
-	ErrorOK      = ErrorCode(0)
-	ErrorUnknown = ErrorCode(-1)
+	ErrorOK       = ErrorCode(0)
+	ErrorUnknown  = ErrorCode(-1)
+	ErrorNotFound = ErrorCode(404)
 )
 
 type ErrorCode int
