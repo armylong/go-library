@@ -1,7 +1,7 @@
 package longgin
 
 import (
-	"github.com/armylong/go-library/service/longin/utils"
+	"github.com/armylong/go-library/service/longgin/utils"
 	"github.com/gin-gonic/gin"
 )
 

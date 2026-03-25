@@ -10,7 +10,7 @@ import (
 	library "github.com/armylong/go-library"
 	"github.com/armylong/go-library/service/application"
 	"github.com/armylong/go-library/service/conf"
-	"github.com/armylong/go-library/service/longin/middlewares"
+	"github.com/armylong/go-library/service/longgin/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
