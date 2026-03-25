@@ -2,7 +2,13 @@ package conf
 
 import (
 	"os"
+	"sync"
+
+	"github.com/spf13/cast"
 )
+
+var initOnce sync.Once
+var httpPort int
 
 type RedisConfig struct {
 	Host     string `json:"host"`
@@ -31,4 +37,17 @@ func GetRedisConfig(serverName string) *RedisConfig {
 		Password: password,
 	}
 	return config
+}
+
+func GetHttpPort() int {
+	return httpPort
+}
+
+func _init() {
+	initOnce.Do(func() {
+		httpPort := cast.ToInt(os.Getenv(`HTTP_PORT`))
+		if httpPort == 0 {
+			httpPort = 80
+		}
+	})
 }
