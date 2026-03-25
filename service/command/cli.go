@@ -2,50 +2,50 @@ package command
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
-// 空结构体，保持和原来一样的用法
 type BaseCommand struct{}
 
 var (
-	rootCmd       = &cobra.Command{Use: "app"}
-	defaultAction func() // 存储默认动作（serve/Web）
+	rootCmd    = &cobra.Command{Use: "app"}
+	defaultCmd *cobra.Command
 )
 
 // AddCliCommand 注册命令
-// 识别 serve 为默认启动命令
 func (t BaseCommand) AddCliCommand(c *cobra.Command) {
-	// 关键逻辑：命令名是 serve → 设置为默认启动
-	if c.Name() == "serve" || c.Name() == "" {
-		defaultAction = func() {
-			_ = c.RunE(nil, nil)
-		}
-	}
-
 	rootCmd.AddCommand(c)
 }
 
-// Go 入口函数，和原来完全一样调用方式
+// SetDefaultCommand 设置默认命令
+func (t BaseCommand) SetDefaultCommand(c *cobra.Command) {
+	if defaultCmd != nil {
+		fmt.Fprintln(os.Stderr, "Warning: default command already set")
+		return
+	}
+	defaultCmd = c
+}
+
+// Go 入口函数
 func Go(Register func(BaseCommand)) {
-	// 执行注册（RegisterWeb / RegisterCmd 等）
 	Register(BaseCommand{})
 
-	// ======================
-	// 核心：空命令 → 执行默认动作（启动Web）
-	// ======================
-	rootCmd.Run = func(cmd *cobra.Command, args []string) {
-		if defaultAction != nil {
-			defaultAction()
+	// 空命令 → 执行默认命令
+	rootCmd.RunE = func(cmd *cobra.Command, args []string) error {
+		if defaultCmd == nil {
+			return fmt.Errorf("no default command registered")
 		}
+
+		// 👇 最标准、最优雅的写法
+		defaultCmd.SetArgs(args)
+		return defaultCmd.ExecuteContext(cmd.Context())
 	}
 
-	// ======================
-	// 启动 Cobra
-	// ======================
 	if err := rootCmd.ExecuteContext(context.Background()); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
