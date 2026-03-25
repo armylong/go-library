@@ -40,6 +40,7 @@ func GetRedisConfig(serverName string) *RedisConfig {
 }
 
 func GetHttpPort() int {
+	_init()
 	return httpPort
 }
 
