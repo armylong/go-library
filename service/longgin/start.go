@@ -37,11 +37,8 @@ func Start(handler func(engine *gin.Engine)) error {
 	//goland:noinspection HttpUrlsUsage
 	parse, _ := url.Parse(`http://` + listener.Addr().String())
 	port, _ = strconv.Atoi(parse.Port())
-	fmt.Printf(`listen: %s://%s:%d (gin: %s, longgin: %s, library: %s)`, parse.Scheme, ip, port, gin.Version, library.Version())
+	fmt.Printf("\nlisten: %s://%s:%d (gin: %s, library: %s)\n", parse.Scheme, ip, port, gin.Version, library.Version())
 
-	if err != nil {
-		return err
-	}
 	err = engine.RunListener(listener)
 	if err != nil {
 		return err

@@ -46,7 +46,7 @@ func GetHttpPort() int {
 
 func _init() {
 	initOnce.Do(func() {
-		httpPort := cast.ToInt(os.Getenv(`HTTP_PORT`))
+		httpPort = cast.ToInt(os.Getenv(`HTTP_PORT`))
 		if httpPort == 0 {
 			httpPort = 80
 		}

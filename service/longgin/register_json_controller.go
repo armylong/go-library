@@ -43,17 +43,17 @@ func RegisterJsonController(router gin.IRouter, controller any) {
 			defer func() {
 				err := recover()
 				if err != nil {
-					fmt.Print(`注册路由:失败:`, fullPath, rt.String(), methodName, err)
+					fmt.Println(`注册路由:失败:`, fullPath, rt.String(), methodName, err)
 				}
 			}()
 			actionHandlers := make([]gin.HandlerFunc, 0, 1)
 			actionHandler := NewJsonActionHandler(rm)
 			actionHandlers = append(actionHandlers, actionHandler)
 			router.Any(relativePath, actionHandlers...)
-			fmt.Print(`注册路由: %s -> %s.%s()`, fullPath, rt.String(), methodName)
+			fmt.Printf("注册路由: %s -> %s.%s()\n", fullPath, rt.String(), methodName)
 			if relativePath == `index` {
 				router.Any(`/`, actionHandlers...)
-				fmt.Print(`注册路由: %s/ -> %s.%s()`, basePath, rt.String(), methodName)
+				fmt.Printf("注册路由: %s/ -> %s.%s()\n", basePath, rt.String(), methodName)
 			}
 		}()
 	}
