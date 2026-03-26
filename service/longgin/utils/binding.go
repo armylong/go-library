@@ -1,15 +1,14 @@
 package utils
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"net/http"
 )
 
 func Bind(ginCtx *gin.Context, data any) (err error) {
-	if err != nil {
-		return err
-	}
+
 	b := binding.Default(ginCtx.Request.Method, ginCtx.ContentType())
 	if bb, ok := b.(binding.BindingBody); ok {
 		if bb == binding.JSON {
