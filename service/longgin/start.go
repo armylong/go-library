@@ -22,7 +22,7 @@ func Start(handler func(engine *gin.Engine)) error {
 
 	// 注册拦截器
 	safeQuit, safeQuitWaitGroup := middlewares.SafeQuit()
-	engine.Use(safeQuit)
+	engine.Use(safeQuit, gin.Logger(), gin.Recovery())
 
 	//业务注册路由
 	handler(engine)
