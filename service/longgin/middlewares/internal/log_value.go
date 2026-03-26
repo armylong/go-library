@@ -26,9 +26,9 @@ func ToLogValue(k string, v any, desensitization bool) any {
 	if desensitization && SafeKey[k] {
 		v = ToSafeValue(v)
 	}
-	switch v.(type) {
+	switch val := v.(type) {
 	case *multipart.FileHeader:
-		return ToLogFileValue(v.(*multipart.FileHeader))
+		return ToLogFileValue(val)
 	case []*multipart.FileHeader:
 		ls := v.([]*multipart.FileHeader)
 		l := len(ls)

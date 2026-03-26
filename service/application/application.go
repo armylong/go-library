@@ -98,7 +98,7 @@ func run(main func() error) (finish chan error) {
 // watchSignal 等待退出信号
 func watchSignal() chan os.Signal {
 	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL)
+	signal.Notify(sig, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	return sig
 }
 
