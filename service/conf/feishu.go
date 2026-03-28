@@ -7,9 +7,15 @@ import (
 
 var fsInitOnce sync.Once
 
+const (
+	UserAccessTokenCacheKey        = "feishu:user:access:token"
+	UserAccessTokenRefreshCacheKey = "feishu:user:access:refresh:token"
+)
+
 type FsConfig struct {
-	AppId     string
-	AppSecret string
+	AppId                          string
+	AppSecret                      string
+	UserAccessTokenRefreshCacheKey string
 }
 
 var fsConfig *FsConfig
@@ -25,8 +31,9 @@ func _initFsConfig() {
 		appSecret := os.Getenv("FEISHU_ARMYLONG_APP_SECRET")
 		if appId != "" && appSecret != "" {
 			fsConfig = &FsConfig{
-				AppId:     appId,
-				AppSecret: appSecret,
+				AppId:                          appId,
+				AppSecret:                      appSecret,
+				UserAccessTokenRefreshCacheKey: UserAccessTokenRefreshCacheKey,
 			}
 			return
 		}
