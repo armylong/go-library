@@ -60,13 +60,10 @@ func _initFeishuSDK() {
 	})
 }
 
-func (t *FeishuSdk) GetTenantAccessToken() string {
-	t.refreshToken()
-	return t.Tk.TenantAccessToken
-}
-
-func (t *FeishuSdk) GetAuthorizationHeader() string {
-	return `Bearer ` + t.GetTenantAccessToken()
+func GetAuthorizationHeader() string {
+	sdk := GetFeishuSDK()
+	sdk.refreshToken()
+	return `Bearer ` + sdk.Tk.TenantAccessToken
 }
 
 func (t *FeishuSdk) refreshToken() {
