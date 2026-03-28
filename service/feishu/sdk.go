@@ -46,12 +46,12 @@ type FSToken struct {
 	Expire            time.Time `json:"expire"`
 }
 
-func GetFeishuSdk() *FeishuSdk {
-	_initFeishuSdk()
+func GetFeishuSDK() *FeishuSdk {
+	_initFeishuSDK()
 	return feishuSdk
 }
 
-func _initFeishuSdk() {
+func _initFeishuSDK() {
 	initFeishuSdk.Do(func() {
 		feishuSdk = &FeishuSdk{
 			AppId:     AppIdMz,
