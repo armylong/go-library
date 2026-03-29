@@ -144,9 +144,10 @@ func GetUserAccessTokenHeader(code, redirectUri string) string {
 	sdk.Utk.Code = code
 	sdk.initUserAccessToken(code, redirectUri)
 	if sdk.Utk == nil || sdk.Utk.UserAccessToken == "" {
-		fmt.Println("未获取到user_access_token")
+		fmt.Println("未获取到 user_access_token")
 		return ""
 	}
+	fmt.Println("获取成功 user_access_token")
 	return `Bearer ` + sdk.Utk.UserAccessToken
 }
 
