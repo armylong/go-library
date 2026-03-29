@@ -159,7 +159,7 @@ func (t *FeishuSdk) initUserAccessToken(code, redirectUri string) {
 
 	fmt.Println(`初始化 user_access_token`)
 	// code获取教程(飞书官方文档): https://open.feishu.cn/document/authentication-management/access-token/obtain-oauth-code#15391e22
-	// (下面是防止踩坑步骤)
+	// (因为刷新token一年才过期, 所以此方法一年只需要执行一次, 下面是防止踩坑步骤)
 	// 1. 先在开发者后台配置你的应用回调地址(随意一个地址都行, 不用非得是自己的服务地址)
 	// 2. 编写授权链接, 例如: https://accounts.feishu.cn/open-apis/authen/v1/authorize?client_id=cli_a94dc0fc84f6dbdd&redirect_uri=https://olfrzjwptnle.ap-northeast-1.clawcloudrun.com&scope=offline_access bitable:app
 	//    a. url 是飞书官方提供,写死https://accounts.feishu.cn/open-apis/authen/v1/authorize
