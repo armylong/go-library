@@ -75,7 +75,7 @@ type FSRefreshUtkResponse struct {
 	ExpiresIn             int    `json:"expires_in"`
 	RefreshToken          string `json:"refresh_token"`
 	RefreshTokenExpiresIn int    `json:"refresh_token_expires_in"`
-	TokenType             int    `json:"token_type"`
+	TokenType             string `json:"token_type"`
 	Scope                 string `json:"scope"`
 	ErrorDescription      string `json:"error_description"`
 }
