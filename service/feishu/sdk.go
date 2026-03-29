@@ -3,6 +3,7 @@ package feishu
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"sync"
 	"time"
 
@@ -65,6 +66,7 @@ type FSRefreshUtkRequest struct {
 	Code         string `json:"code"`
 	RefreshToken string `json:"refresh_token"`
 	Scope        string `json:"scope"`
+	RedirectURI  string `json:"redirect_uri"`
 }
 
 type FSRefreshUtkResponse struct {
@@ -75,6 +77,7 @@ type FSRefreshUtkResponse struct {
 	RefreshTokenExpiresIn int    `json:"refresh_token_expires_in"`
 	TokenType             int    `json:"token_type"`
 	Scope                 string `json:"scope"`
+	ErrorDescription      string `json:"error_description"`
 }
 
 func GetFeishuSDK() *FeishuSdk {
@@ -136,17 +139,18 @@ func (t *FeishuSdk) refreshTenantAccessToken() {
 
 }
 
-func GetUserAccessTokenHeader(code string) string {
+func GetUserAccessTokenHeader(code, redirectUri string) string {
 	sdk := GetFeishuSDK()
 	sdk.Utk.Code = code
-	sdk.initUserAccessToken(code)
+	sdk.initUserAccessToken(code, redirectUri)
 	if sdk.Utk == nil || sdk.Utk.UserAccessToken == "" {
+		fmt.Println("UserAccessToken is empty")
 		return ""
 	}
 	return `Bearer ` + sdk.Utk.UserAccessToken
 }
 
-func (t *FeishuSdk) initUserAccessToken(code string) {
+func (t *FeishuSdk) initUserAccessToken(code, redirectUri string) {
 
 	if code == "" {
 		t.refreshUserAccessToken()
@@ -159,16 +163,20 @@ func (t *FeishuSdk) initUserAccessToken(code string) {
 		ClientID:     t.AppId,
 		ClientSecret: t.AppSecret,
 		Code:         code,
+		RedirectURI:  redirectUri,
 	}
 	b, _ := json.Marshal(req)
 	res, err := httpx.Post(UserAccessTokenUrl, b)
+	fmt.Println(string(res))
 	if err != nil {
+		fmt.Println("Post authorization_code error", err.Error())
 		return
 	}
 
 	data := &FSRefreshUtkResponse{}
 	err = json.Unmarshal(res, &data)
 	if err != nil {
+		fmt.Println("Unmarshal authorization_code error", err.Error())
 		return
 	}
 
@@ -201,6 +209,7 @@ func (t *FeishuSdk) refreshUserAccessToken() {
 	if t.Utk.RefreshToken == "" || time.Now().Before(t.Utk.RefreshTokenExpireTime.Add(-5*time.Minute)) {
 		t.Utk.RefreshToken = t.GetUserAccessRefreshTokenCache()
 		if t.Utk.RefreshToken == "" {
+			fmt.Println("RefreshToken is empty")
 			return
 		}
 	}
@@ -214,12 +223,14 @@ func (t *FeishuSdk) refreshUserAccessToken() {
 	b, _ := json.Marshal(req)
 	res, err := httpx.Post(UserAccessTokenUrl, b)
 	if err != nil {
+		fmt.Println("Post refresh_token error", err.Error())
 		return
 	}
 
 	data := &FSRefreshUtkResponse{}
 	err = json.Unmarshal(res, &data)
 	if err != nil {
+		fmt.Println("Unmarshal refresh_token error", err.Error())
 		return
 	}
 
@@ -233,6 +244,8 @@ func (t *FeishuSdk) refreshUserAccessToken() {
 			RefreshTokenExpireTime: time.Now().Add(time.Duration(data.RefreshTokenExpiresIn) * time.Second),
 		}
 		t.updateUserAccessRefreshTokenCache()
+	} else {
+		fmt.Println(data)
 	}
 }
 
