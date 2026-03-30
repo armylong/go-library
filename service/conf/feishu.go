@@ -8,7 +8,6 @@ import (
 var fsInitOnce sync.Once
 
 const (
-	UserAccessTokenCacheKey        = "feishu:user:access:token"
 	UserAccessTokenRefreshCacheKey = "feishu:user:access:refresh:token"
 )
 
