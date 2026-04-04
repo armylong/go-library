@@ -139,16 +139,32 @@ func (t *FeishuSdk) refreshTenantAccessToken() {
 
 }
 
-func GetUserAccessTokenHeader(code, redirectUri string) string {
+type GetUserAccessTokenRequest struct {
+	Code        string `json:"code"`
+	RedirectURI string `json:"redirect_uri"`
+}
+
+func GetUserAccessToken(req *GetUserAccessTokenRequest) string {
+	if req == nil {
+		req = &GetUserAccessTokenRequest{}
+	}
 	sdk := GetFeishuSDK()
-	sdk.Utk.Code = code
-	sdk.initUserAccessToken(code, redirectUri)
+	sdk.Utk.Code = req.Code
+	sdk.initUserAccessToken(req.Code, req.RedirectURI)
 	if sdk.Utk == nil || sdk.Utk.UserAccessToken == "" {
 		fmt.Println("未获取到 user_access_token")
 		return ""
 	}
 	fmt.Println("获取成功 user_access_token")
-	return `Bearer ` + sdk.Utk.UserAccessToken
+	return sdk.Utk.UserAccessToken
+}
+
+func GetUserAccessTokenHeader(req *GetUserAccessTokenRequest) string {
+	UserAccessToken := GetUserAccessToken(req)
+	if UserAccessToken == "" {
+		return ""
+	}
+	return `Bearer ` + UserAccessToken
 }
 
 func (t *FeishuSdk) initUserAccessToken(code, redirectUri string) {
